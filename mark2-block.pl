@@ -108,8 +108,8 @@ while (my ($K, $V) = each %ip) {
 
 Debug::msg(sprintf "Have %i: %s\n", scalar @shitlist, "@shitlist");
 
-#system 'shorewall', 'drop', @shitlist
-#	if (@shitlist);
+system 'shorewall', 'drop', @shitlist
+	if (@shitlist);
 
 # Subroutines
 sub slurp {
