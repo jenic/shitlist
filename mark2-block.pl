@@ -2,8 +2,8 @@
 
 use strict;
 require "Debug.pm";
-$Debug::ENABLED = 1;
-use Data::Dumper;
+#$Debug::ENABLED = 1;
+#use Data::Dumper;
 
 use constant {
 	_DEFS	=> 'conditions',
@@ -19,6 +19,7 @@ my %ip;
 my %matches = %{&getDefs(_DEFS)};
 my %type = %{&getDefs(_TYPES)};
 my @shitlist;
+chomp(my $me = `dig +short jenic.wubwub.me`);
 
 # Read input
 while (<STDIN>) {
@@ -73,6 +74,11 @@ Debug::msg("== Applying conditions to stored events == ");
 IP:
 while (my ($K, $V) = each %ip) {
 	Debug::msg(sprintf "Evaluating $K, has %i types", scalar keys %$V);
+    if ($K eq $me) {
+        Debug::msg("$K is me ($me), skipping");
+        next;
+    }
+
 	# Iterate through log types within IP record
 	while (my ($k, $v) = each %$V) {
 		Debug::msg(
@@ -81,10 +87,10 @@ while (my ($K, $V) = each %ip) {
 			$k, $K
 		);
 		# Matches known conditions?
-		warn Dumper(%matches);
+        #warn Dumper(%matches);
 		while (my ($rx, $d) = each %matches) {
 			next unless ($d->[0] eq $k);
-			# TODO: Finish this refactor
+
 			while ( my ($event, $count) = each %$v) {
 				Debug::msg(
 					"$event ~ $rx && $count >= $d->[1]"
