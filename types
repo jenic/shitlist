@@ -1,0 +1,8 @@
+# Name		# Regex		# Order
+##
+# Name is just an internal name
+# Regex is used to identify syslog lines
+# Order is boolean. 0 = value, key | 1 = key, value
+postfix \]:\s(.*?)\s[A-z0-9\.]+\[(.*?)\]    0
+fw  FW:.*SRC=(.*?)\s.*DPT=(.*?)\s	    1
+ssh \]:\s(Invalid\suser)\s.*from\s(.*?)$    0
