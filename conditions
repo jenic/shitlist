@@ -1,7 +1,9 @@
 #Match_Regex	Type    Match_Limit
+## Remember I s/\s/_/ lol
 
 lost_conn.*_AUTH postfix 4
 lost_conn.*DATA postfix 6
 lost_conn.*CONNECT  postfix 6
-Invalid\suser   ssh 3
+Invalid_user   ssh 3
 \d+ fw  3
+cation_failures    ssh 6
