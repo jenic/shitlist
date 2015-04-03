@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 
 use strict;
+use warnings;
+#use 5.10.1;
 require "Debug.pm";
 #$Debug::ENABLED = 1;
 #use Data::Dumper;
@@ -23,8 +25,13 @@ chomp(my $me = `dig +short jenic.wubwub.me`);
 
 # Read input
 while (<STDIN>) {
+    chomp();
 	my ($IP, $string, $type);
+    Debug::msg("Looping $_");
+    #Why does this fix everything??
+    #Debug::msg($_) for ( keys %type );
 	while (my ($k, $v) = each %type) {
+        Debug::msg("\t$v->[0]");
 		my @m = ($_ =~ $v->[0]);
 		if (@m > 2) {
 			Debug::msg("More than 2 groups?! (@m)");
@@ -32,7 +39,9 @@ while (<STDIN>) {
 		} elsif (!@m) {
 			next;
 		}
-		Debug::msg("$_ identified as $k");
+        # Still here if we matched 1 or 2 things
+        # Goes without saying, line categorizes as first match
+		Debug::msg("$_ identified as $k : @m");
 		$type = $k;
 		# Third field of types defines k,v order
 		if ($v->[1]) {
@@ -46,6 +55,9 @@ while (<STDIN>) {
 		$string =~ s/\s+/_/g;
 		last;
 	}
+
+    # Did we ever match?
+    next unless ($type);
 
 	# This exact record (IP=>Type=>Event) already exists. Increment its
 	# "seen" counter and continue
