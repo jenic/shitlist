@@ -102,9 +102,10 @@ while (my ($K, $V) = each %ip) {
 			scalar keys %$v,
 			$k, $K
 		);
-		# Matches known conditions?
+        # Matches known conditions?
         #warn Dumper(%matches);
         keys %matches; # Reset each() iterator, see above for desc
+
 		while (my ($rx, $d) = each %matches) {
 			next unless ($d->[0] eq $k);
 
