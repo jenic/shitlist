@@ -123,6 +123,7 @@ while (my ($K, $V) = each %ip) {
 }
 
 Debug::msg(sprintf "Have %i: %s\n", scalar @shitlist, "@shitlist");
+#Debug::msg(Dumper(%ip));
 
 system 'shorewall', 'drop', @shitlist
 	if (!$ENV{DRYRUN} && @shitlist);
@@ -144,7 +145,7 @@ sub slurp {
 sub getDefs {
 	my $file = shift;
 	my @raw = @{&slurp($file)};
-	Debug::msg("[getTypes] @raw");
+	Debug::msg("[getDefs] @raw");
 	my %types =	map { $_->[0] => [ $_->[1], $_->[2] ] }
 			map { [ split ] }
 			@raw;
