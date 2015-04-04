@@ -2,9 +2,8 @@
 
 use strict;
 use warnings;
-#use 5.10.1;
+#use 5.012;
 require "Debug.pm";
-#$Debug::ENABLED = 1;
 #use Data::Dumper;
 
 use constant {
@@ -19,7 +18,7 @@ sub getDefs;
 # Globals
 my %ip;
 my %matches = %{&getDefs(_DEFS)};
-my %type = %{&getDefs(_TYPES)};
+my %cata = %{&getDefs(_TYPES)};
 my @shitlist;
 chomp(my $me = `dig +short jenic.wubwub.me`);
 
@@ -28,9 +27,14 @@ while (<STDIN>) {
     chomp();
 	my ($IP, $string, $type);
     Debug::msg("Looping $_");
-    #Why does this fix everything??
-    #Debug::msg($_) for ( keys %type );
-	while (my ($k, $v) = each %type) {
+    # Reset each() iterator by calling keys() in void context
+    # Need this because loop control statements are not seen by each()'s
+    # internal iterator. This causes elements in %cata to be skipped on some
+    # lines unless in debug mode, driving the maintainer to quantum madness.
+    # See: http://perldoc.perl.org/functions/keys.html and
+    # http://perldoc.perl.org/functions/each.html
+    keys %cata;
+	while (my ($k, $v) = each %cata) {
         Debug::msg("\t$v->[0]");
 		my @m = ($_ =~ $v->[0]);
 		if (@m > 2) {
