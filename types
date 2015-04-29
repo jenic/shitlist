@@ -5,5 +5,5 @@
 # Order is boolean. 0 = value, key | 1 = key, value
 postfix postfix.*?:\s(.*?)\s[A-z0-9\.]+\[(.*?)\]    0
 fw  FW:.*SRC=(.*?)\s.*DPT=(.*?)\s	    1
-ssh \]:\s(Invalid\suser)\s.*from\s(.*?)$    0
+sshauth \]:\s(Invalid\suser)\s.*from\s(.*?)$    0
 ssh sshd.*:(.*?)\sfor\s\w+\sfrom\s(.*?)\s 0
