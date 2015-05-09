@@ -7,4 +7,5 @@ lost_conn.*CONNECT  postfix 6
 lost_conn.*EHLO  postfix 8
 Invalid_user   sshauth 3
 \d+ fw  3
-cation_failures    ssh 6
+cation_failures    ssh 3
+cation_attempts ssh 3

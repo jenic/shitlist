@@ -3,7 +3,7 @@
 # Name is just an internal name
 # Regex is used to identify syslog lines
 # Order is boolean. 0 = value, key | 1 = key, value
-postfix postfix.*?:\s(.*?)\s[A-z0-9\.]+\[(.*?)\]    0
+postfix postfix.*?:(.*?)[A-z0-9\.]+\[(.*?)\]    0
 fw  FW:.*SRC=(.*?)\s.*DPT=(.*?)\s	    1
-sshauth \]:\s(Invalid\suser)\s.*from\s(.*?)$    0
-ssh sshd.*:(.*?)\sfor\s\w+\sfrom\s(.*?)\s 0
+sshauth \]:\s?(Invalid\suser).*from\s(.*?)$    0
+ssh sshd.*:(.*?)from\s(.*?)\s 0
