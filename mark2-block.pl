@@ -3,22 +3,37 @@
 use strict;
 use warnings;
 #use 5.012;
+use Getopt::Long;
+use Pod::Usage;
 require "Debug.pm";
 #use Data::Dumper;
-
-use constant {
-    _DEFS   => 'conditions',
-    _TYPES  => 'types',
-};
 
 # Subroutine Declarations
 sub slurp;
 sub getDefs;
 
+# Config
+my ($types, $defs) =
+( 'types'
+, 'conditions'
+);
+my ($help, $man, $ident);
+
+GetOptions
+( 'types=s' => \$types
+, 'defs=s' => \$defs
+, 'identify' => \$ident
+, 'help|?' => \$help
+, 'man' => \$man
+) or pod2usage(2);
+
+pod2usage(1) if $help;
+pod2usage(-exitval => 0, -verbose => 2) if $man;
+
 # Globals
 my %ip;
-my %matches = %{&getDefs(_DEFS)};
-my %cata = %{&getDefs(_TYPES)};
+my %matches = %{&getDefs($defs)};
+my %cata = %{&getDefs($types)};
 my @shitlist;
 chomp(my $me = `dig +short jenic.wubwub.me`);
 
@@ -153,3 +168,46 @@ sub getDefs {
             @raw;
     return \%types;
 }
+
+__END__
+
+=head1 shitlist
+
+Perl Shitlist detection using Shorewall and regex definitions.
+
+=head1 SYNOPSIS
+
+journalctl --since=today | ./shitlist
+OR 
+./shitlist < /var/log/messages
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exit
+
+=item B<-man>
+
+Prints the manual page and exits
+
+=item B<-identify>
+
+Reports lines that could not be identified with the given type regex file
+
+=item B<-types>
+
+Specify a file to read type definitions from. Defaults to 'types'
+
+=item B<-defs>
+
+Specify a file to read condition definitions from. Defaults to 'conditions'
+
+=back
+
+=head1 DESCRIPTION
+
+B<shitlist> is a fail2ban inspired project to detect IPs that should be banned
+with shorewall based on regex definitions and log files given over STDIN.
