@@ -13,9 +13,10 @@ sub slurp;
 sub getDefs;
 
 # Config
-my ($types, $defs) =
+my ($types, $defs, $dryrun) =
 ( 'types'
 , 'conditions'
+, $ENV{DRYRUN} || undef
 );
 my ($help, $man, $ident);
 
@@ -23,6 +24,7 @@ GetOptions
 ( 'types=s' => \$types
 , 'defs=s' => \$defs
 , 'identify' => \$ident
+, 'dryrun' => \$dryrun
 , 'help|?' => \$help
 , 'man' => \$man
 ) or pod2usage(2);
@@ -148,7 +150,7 @@ Debug::msg(sprintf "Have %i: %s\n", scalar @shitlist, "@shitlist");
 #Debug::msg(Dumper(%ip));
 
 system 'shorewall', 'drop', @shitlist
-    if (!$ENV{DRYRUN} && @shitlist);
+    if (!$dryrun && @shitlist);
 
 # Subroutines
 sub slurp {
@@ -197,6 +199,11 @@ Print a brief help message and exit
 =item B<-man>
 
 Prints the manual page and exits
+
+=item B<-dryrun>
+
+Do not invoke shorewall after identifying IPs to shitlist. Can also use env
+vars such as DRYRUN=1 ./shitlist.
 
 =item B<-identify>
 
