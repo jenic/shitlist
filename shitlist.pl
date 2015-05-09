@@ -76,7 +76,12 @@ while (<STDIN>) {
     }
 
     # Did we ever match?
-    next unless ($type);
+    unless ($type) {
+        if ($ident) {
+            print $_, "\n";
+        }
+        next;
+    }
 
     # This exact record (IP=>Type=>Event) already exists. Increment its
     # "seen" counter and continue
