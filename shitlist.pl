@@ -149,7 +149,7 @@ while (my ($K, $V) = each %ip) {
 Debug::msg(sprintf "Have %i: %s\n", scalar @shitlist, "@shitlist");
 #Debug::msg(Dumper(%ip));
 
-system 'shorewall', 'drop', @shitlist
+system 'sudo', 'shorewall', 'drop', @shitlist
     if (!$dryrun && @shitlist);
 
 # Subroutines
